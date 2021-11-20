@@ -6,7 +6,6 @@ summ = np.sum(row)
 print(summ)
 
 while True:
-    print('')
     row_length = input('Enter row length or "q" to end the program: ')
     if row_length == 'q':
         break
