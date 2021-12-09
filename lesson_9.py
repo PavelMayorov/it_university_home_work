@@ -1,14 +1,22 @@
 from random import choice
 
 
-def compare_2(s1, s2):
+def compare(s1, s2):
+    ngrams = [s1[i:i + 3] for i in range(len(s1))]
     count = 0
-    for i in range(len(s1)):
-        if s1[i] == s2[i]:
-            count += 1
-        else:
-            break
+    for ngram in ngrams:
+        count += s2.count(ngram)
     return count / max(len(s1), len(s2))
+
+
+def checking_every_word(s1, s2, max_len):
+    max_similarity_list = []
+    for s1_word in s1.split():
+        similarity_list = []
+        for s2_word in s2.split():
+            similarity_list.append(compare(s1_word, s2_word))
+        max_similarity_list.append(max(similarity_list))
+    return sum(max_similarity_list) / max_len
 
 
 def random_answer():
@@ -21,9 +29,10 @@ def random_answer():
         else:
             flag = True
             for key in answers:
-                result = compare_2(key, question)
-                if result > 0.6:
-                    print(answers[question])
+                max_len = max(len(key.split()), len(question.split()))
+                similarity = checking_every_word(key, question, max_len)
+                if similarity > (1 - (1 / max_len)):
+                    print(answers[key])
                     flag = False
             if flag:
                 answer = choice(['yes', 'no'])
